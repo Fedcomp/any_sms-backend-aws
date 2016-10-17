@@ -1,0 +1,14 @@
+AllCops:
+  TargetRubyVersion: 2.1
+  Exclude:
+    - "lib/active_sms-backend-aws.rb"
+
+Metrics/LineLength:
+  Max: 90
+
+Style/StringLiterals:
+  EnforcedStyle: double_quotes
+  ConsistentQuotesInMultiline: true
+
+Style/ClassAndModuleChildren:
+  EnforcedStyle: compact
