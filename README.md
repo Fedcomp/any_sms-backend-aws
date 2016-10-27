@@ -17,6 +17,13 @@ Here are steps to achieve that:
    ![security credentials](screenshot.png)
 
    save **access key id** and **secret acces key** somwhere.
+5. Now close popup and click on the user.
+6. Click **Permissions** tab. It will look like this
+
+   ![permissions tab](permissions_screenshot.png)
+
+7. Click on **Attach Policy**, then filter by **SNS**.
+8. Check **AmazonSNSFullAccess**, click **Attach Policy** (at the bottom)
 
 This is simple example on how to get them and make things work quick.
 In reality AWS support various access options,
@@ -34,6 +41,7 @@ Then somewhere in your initialization code:
 
 ```ruby
 require "active_sms"
+require "active_sms-backend-aws"
 
 ActiveSMS.configure do |c|
   c.register_backend(:my_main_backend,
