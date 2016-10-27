@@ -1,8 +1,5 @@
-# rubocop:disable Style/ClassAndModuleChildren
-module ActiveSms
+module ActiveSMS
   module Backend
-    module AWS
-      VERSION = "0.1.0".freeze
-    end
+    AWS_VERSION = "0.0.1".freeze
   end
 end

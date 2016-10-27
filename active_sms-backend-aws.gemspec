@@ -6,7 +6,7 @@ require "active_sms/backend/aws/version"
 # rubocop:disable Metrics/BlockLength
 Gem::Specification.new do |spec|
   spec.name          = "active_sms-backend-aws"
-  spec.version       = ActiveSms::Backend::AWS::VERSION
+  spec.version       = ActiveSMS::Backend::AWS_VERSION
   spec.authors       = ["Fedcomp"]
   spec.email         = ["aglergen@gmail.com"]
 
@@ -18,7 +18,7 @@ Gem::Specification.new do |spec|
     raise "RubyGems 2.0 or newer is required to protect against public gem pushes."
   end
 
-  spec.metadata["allowed_push_host"] = "TODO: Set to 'http://mygemserver.com'"
+  spec.metadata["allowed_push_host"] = "https://rubygems.org"
 
   spec.files = `git ls-files -z`.split("\x0").reject do |f|
     f.match(%r{^(test|spec|features)/})
@@ -28,6 +28,7 @@ Gem::Specification.new do |spec|
   spec.require_paths = ["lib"]
 
   spec.add_dependency "active_sms"
+  spec.add_dependency "aws-sdk", "~> 2.6"
 
   spec.add_development_dependency "bundler", "~> 1.12"
   spec.add_development_dependency "rake", "~> 10.0"

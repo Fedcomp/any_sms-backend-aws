@@ -1,6 +1,7 @@
 AllCops:
   TargetRubyVersion: 2.1
   Exclude:
+    - "lib/active_sms/backend/aws/version.rb"
     - "lib/active_sms-backend-aws.rb"
 
 Metrics/LineLength:
