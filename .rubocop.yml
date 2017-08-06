@@ -4,6 +4,10 @@ AllCops:
     - "lib/any_sms/backend/aws/version.rb"
     - "lib/any_sms-backend-aws.rb"
 
+Metrics/BlockLength:
+  Exclude:
+    - "spec/**/*"
+
 Metrics/LineLength:
   Max: 90
 
