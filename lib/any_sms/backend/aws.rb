@@ -1,9 +1,9 @@
 require "aws-sdk"
-require "active_sms"
-require "active_sms/backend/aws/version"
+require "any_sms"
+require "any_sms/backend/aws/version"
 
-# ActiveSMS backend class to send sms using amazon web services
-class ActiveSMS::Backend::AWS < ActiveSMS::Backend::Base
+# AnySMS backend class to send sms using amazon web services
+class AnySMS::Backend::AWS < AnySMS::Backend::Base
   # To use class, you need access key from AWS.
   # Go to README for instructions on how to obtain them.
   #

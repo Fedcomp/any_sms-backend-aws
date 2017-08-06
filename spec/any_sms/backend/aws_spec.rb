@@ -1,9 +1,9 @@
 require "spec_helper"
-require "active_sms/backend/aws"
+require "any_sms/backend/aws"
 
-describe ActiveSMS::Backend::AWS do
+describe AnySMS::Backend::AWS do
   it "has a version number" do
-    expect(ActiveSMS::Backend::AWS_VERSION).not_to be nil
+    expect(AnySMS::Backend::AWS_VERSION).not_to be nil
   end
 
   describe ".send_sms" do

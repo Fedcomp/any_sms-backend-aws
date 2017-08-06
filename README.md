@@ -1,7 +1,7 @@
-# ActiveSMS::Backend::AWS
-[![Build Status](https://travis-ci.org/Fedcomp/active_sms-backend-aws.svg?branch=master)](https://travis-ci.org/Fedcomp/active_sms-backend-aws)
+# AnySMS::Backend::AWS
+[![Build Status](https://travis-ci.org/Fedcomp/any_sms-backend-aws.svg?branch=master)](https://travis-ci.org/Fedcomp/any_sms-backend-aws)
 
-ActiveSMS backend to send sms using [Amazon Web Services](https://aws.amazon.com).
+AnySMS backend to send sms using [Amazon Web Services](https://aws.amazon.com).
 **At this point gem does not support SenderID**. If you know how to specify it - open issue or make pull request, all contributions are welcome!
 
 ## Before installation - obtaining token
@@ -34,18 +34,18 @@ you may read them [here](https://goo.gl/sajJgL) and configure it more strict or 
 Add this line to your application's Gemfile:
 
 ```ruby
-gem "active_sms-backend-aws"
+gem "any_sms-backend-aws"
 ```
 
 Then somewhere in your initialization code:
 
 ```ruby
-require "active_sms"
-require "active_sms-backend-aws"
+require "any_sms"
+require "any_sms-backend-aws"
 
-ActiveSMS.configure do |c|
+AnySMS.configure do |c|
   c.register_backend(:my_main_backend,
-    ActiveSMS::Backend::AWS,
+    AnySMS::Backend::AWS,
     access_key: ENV["AWS_ACCESS_KEY"],
     secret_access_key: ENV["AWS_SECRET_ACCESS_KEY"],
     region: ENV["AWS_REGION"] # Optional, default will be "us-east-1"
@@ -66,15 +66,15 @@ Now, whenever you need to send SMS, just do:
 
 ```ruby
 # Will immediately send sms
-ActiveSMS.send_sms("+10000000000", "My sms text")
+AnySMS.send_sms("+10000000000", "My sms text")
 ```
 
 For more advanced usage please
-go to [ActiveSMS documentation](https://github.com/Fedcomp/active_sms#real-life-example)
+go to [AnySMS documentation](https://github.com/Fedcomp/any_sms#real-life-example)
 
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/Fedcomp/active_sms-backend-aws.
+Bug reports and pull requests are welcome on GitHub at https://github.com/Fedcomp/any_sms-backend-aws.
 
 ## License
 
