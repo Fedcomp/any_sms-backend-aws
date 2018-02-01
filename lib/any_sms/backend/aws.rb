@@ -20,14 +20,16 @@ class AnySMS::Backend::AWS < AnySMS::Backend::Base
   #
   # @phone [String] Phone number in E.164 format
   # @text  [String] Sms text
-  def send_sms(phone, text)
+  def send_sms(phone, text, _args = {})
     resp = sns_client.publish(phone_number: phone, message: text)
 
     if resp.error.nil? && resp.message_id
       respond_with_status :success
     else
-      respond_with_status :unknown_failure
+      respond_with_status :sending_failure, meta: { error: resp.error }
     end
+  rescue StandardError => e
+    respond_with_status :runtime_error, meta: { error: e }
   end
 
   protected

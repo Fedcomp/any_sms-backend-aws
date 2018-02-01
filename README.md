@@ -1,8 +1,7 @@
 # AnySMS::Backend::AWS
 [![Build Status](https://travis-ci.org/Fedcomp/any_sms-backend-aws.svg?branch=master)](https://travis-ci.org/Fedcomp/any_sms-backend-aws)
 
-AnySMS backend to send sms using [Amazon Web Services](https://aws.amazon.com).
-**At this point gem does not support SenderID**. If you know how to specify it - open issue or make pull request, all contributions are welcome!
+AnySMS backend to send sms using [AWS](https://aws.amazon.com) SNS service.
 
 ## Before installation - obtaining token
 
@@ -34,38 +33,36 @@ you may read them [here](https://goo.gl/sajJgL) and configure it more strict or 
 Add this line to your application's Gemfile:
 
 ```ruby
-gem "any_sms-backend-aws"
+gem "any_sms-backend-aws", "~> 1.0"
 ```
 
 Then somewhere in your initialization code:
 
 ```ruby
-require "any_sms"
 require "any_sms-backend-aws"
 
 AnySMS.configure do |c|
-  c.register_backend(:my_main_backend,
+  c.register_backend(:my_aws_backend,
     AnySMS::Backend::AWS,
-    access_key: ENV["AWS_ACCESS_KEY"],
+    access_key:        ENV["AWS_ACCESS_KEY"],
     secret_access_key: ENV["AWS_SECRET_ACCESS_KEY"],
-    region: ENV["AWS_REGION"] # Optional, default will be "us-east-1"
+    region:            ENV["AWS_REGION"] # Optional, default will be "us-east-1"
   )
 
-  c.default_backend = :my_main_backend
+  c.default_backend = :my_aws_backend
 end
 ```
-This is an simple example of configuration.
+This is an simple example configuration.
 Before running application you should specify
 `AWS_ACCESS_KEY`, `AWS_SECRET_ACCESS_KEY` and `AWS_REGION`
 environment variables.
-You may change initializer code to suit your needs more,
-just make sure **you never store credentials commited to your codebase**.
-It should be stored separately from application.
+
+!!Make sure **you never commit credentials (secrets) to your repository**!!
 
 Now, whenever you need to send SMS, just do:
 
 ```ruby
-# Will immediately send sms
+# Will immediately send sms using AWS sns
 AnySMS.send_sms("+10000000000", "My sms text")
 ```
 

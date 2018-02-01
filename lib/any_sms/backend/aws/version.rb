@@ -1,5 +1,5 @@
 module AnySMS
   module Backend
-    AWS_VERSION = "0.0.3".freeze
+    AWS_VERSION = "0.1.0".freeze
   end
 end

@@ -6,7 +6,7 @@ describe AnySMS::Backend::AWS do
     expect(AnySMS::Backend::AWS_VERSION).not_to be nil
   end
 
-  describe ".send_sms" do
+  describe "#send_sms" do
     # initialization args
     let(:access_key) { "XXXXXXXXXXXXXXXXXXXX" }
     let(:secret_access_key) { "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX" }
@@ -16,7 +16,7 @@ describe AnySMS::Backend::AWS do
     let(:phone_number) { "+10000000000" }
     let(:text) { "sms text" }
 
-    subject do
+    subject(:instance) do
       described_class.new access_key: access_key,
                           secret_access_key: secret_access_key,
                           region: region
@@ -28,23 +28,63 @@ describe AnySMS::Backend::AWS do
       expect(Aws::SNS::Client).to receive(:new).and_return(mocked_client)
     end
 
-    it "responds to success? on successful sending" do
-      expect(subject.send_sms(phone_number, text)).to be_success
+    context "on success" do
+      it "responds to success?" do
+        expect(subject.send_sms(phone_number, text)).to be_success
+      end
     end
 
     context "on failure" do
-      before do
-        # imitate failure on current implementation
-        expect_any_instance_of(Aws::SNS::Types::PublishResponse)
-          .to receive(:message_id).and_return(nil)
+      context "when AWS return remote error" do
+        before do
+          # imitate failure on current implementation
+          allow_any_instance_of(Aws::SNS::Types::PublishResponse)
+            .to receive(:message_id)
+        end
+
+        it "responds to .failed?" do
+          expect(subject.send_sms(phone_number, text)).to be_failed
+        end
+
+        it "is not .success?" do
+          expect(subject.send_sms(phone_number, text)).not_to be_success
+        end
+
+        it "returns :sending_failure .status" do
+          expect(subject.send_sms(phone_number, text).status).to eq(:sending_failure)
+        end
       end
 
-      it "responds to failed?" do
-        expect(subject.send_sms(phone_number, text)).to be_failed
-      end
+      context "when RuntimeError was raised" do
+        let(:expected_args) do
+          { phone_number: "", message: "sms text" }
+        end
 
-      it "returns :unknown_failure status" do
-        expect(subject.send_sms(phone_number, text).status).to eq(:unknown_failure)
+        let(:exception) { StandardError.new("Whatever could happen") }
+
+        before do
+          expect(mocked_client).to receive(:publish).with(expected_args) do
+            raise exception
+          end
+        end
+
+        subject { instance.send_sms("", text) }
+
+        it "responds to .failed?" do
+          expect(subject).to be_failed
+        end
+
+        it "is not .success?" do
+          expect(subject).not_to be_success
+        end
+
+        it "returns :runtime_error .status" do
+          expect(subject.status).to eq(:runtime_error)
+        end
+
+        it "hold exception object in .meta[:error]" do
+          expect(subject.meta[:error]).to be(exception)
+        end
       end
     end
   end
