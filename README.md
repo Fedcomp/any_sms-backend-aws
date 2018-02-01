@@ -46,16 +46,23 @@ AnySMS.configure do |c|
     AnySMS::Backend::AWS,
     access_key:        ENV["AWS_ACCESS_KEY"],
     secret_access_key: ENV["AWS_SECRET_ACCESS_KEY"],
-    region:            ENV["AWS_REGION"] # Optional, default will be "us-east-1"
+    region:            ENV["AWS_REGION"], # Optional, default will be "us-east-1"
+    default_sender_id: ENV["AWS_SNS_DEFAULT_SENDER_ID"] # Optional
   )
 
   c.default_backend = :my_aws_backend
 end
 ```
+
 This is an simple example configuration.
 Before running application you should specify
-`AWS_ACCESS_KEY`, `AWS_SECRET_ACCESS_KEY` and `AWS_REGION`
+`AWS_ACCESS_KEY`, `AWS_SECRET_ACCESS_KEY`
 environment variables.
+Optionally you can specify `AWS_REGION`
+and `AWS_SNS_DEFAULT_SENDER_ID` (sms sender as text instead of phone).
+
+Keep in mind that `AWS_SNS_DEFAULT_SENDER_ID` is **changing ACCOUNT SETTINGS**,
+and is NOT per request. In case you know how to set it per request - please open issue.
 
 !!Make sure **you never commit credentials (secrets) to your repository**!!
 

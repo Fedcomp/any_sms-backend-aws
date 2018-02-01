@@ -10,7 +10,8 @@ AnySMS.configure do |c|
     AnySMS::Backend::AWS,
     access_key:        ENV["AWS_ACCESS_KEY"],
     secret_access_key: ENV["AWS_SECRET_ACCESS_KEY"],
-    region:            ENV["AWS_REGION"] # Optional, default will be "us-east-1"
+    region:            ENV["AWS_REGION"], # Optional, default will be "us-east-1"
+    default_sender_id: ENV["AWS_SNS_DEFAULT_SENDER_ID"]
   )
 
   c.default_backend = :my_aws_backend

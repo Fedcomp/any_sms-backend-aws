@@ -10,10 +10,13 @@ class AnySMS::Backend::AWS < AnySMS::Backend::Base
   # @param access_key [String] AWS access key
   # @param secret_access_key [String] AWS secret access key
   # @param region [String] AWS region. Full list: https://goo.gl/Ys5XMi
-  def initialize(access_key:, secret_access_key:, region: "us-east-1")
+  # @param default_sender_id [String] Default SenderID, !CHANGES account settings!
+  def initialize(access_key:, secret_access_key:, region: "us-east-1",
+                 default_sender_id: nil)
     @access_key = access_key
     @secret_access_key = secret_access_key
     @region = region
+    @default_sender_id = default_sender_id
   end
 
   # Sends sms using amazon web services
@@ -35,10 +38,22 @@ class AnySMS::Backend::AWS < AnySMS::Backend::Base
   protected
 
   def sns_client
-    Aws::SNS::Client.new(
+    @client ||= begin
+      client = Aws::SNS::Client.new(sns_options)
+
+      unless @default_sender_id.nil?
+        client.set_sms_attributes(attributes: { "DefaultSenderID" => @default_sender_id })
+      end
+
+      client
+    end
+  end
+
+  def sns_options
+    {
       access_key_id: @access_key,
       secret_access_key: @secret_access_key,
       region: @region
-    )
+    }
   end
 end

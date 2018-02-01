@@ -11,6 +11,7 @@ describe AnySMS::Backend::AWS do
     let(:access_key) { "XXXXXXXXXXXXXXXXXXXX" }
     let(:secret_access_key) { "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX" }
     let(:region) { "us-east-1" }
+    let(:default_sender_id) { "test_sender" }
 
     # send_sms args
     let(:phone_number) { "+10000000000" }
@@ -19,13 +20,21 @@ describe AnySMS::Backend::AWS do
     subject(:instance) do
       described_class.new access_key: access_key,
                           secret_access_key: secret_access_key,
-                          region: region
+                          region: region,
+                          default_sender_id: default_sender_id
     end
 
     let(:mocked_client) { Aws::SNS::Client.new(stub_responses: true) }
 
     before do
       expect(Aws::SNS::Client).to receive(:new).and_return(mocked_client)
+    end
+
+    it "set default_sender_id" do
+      expect(mocked_client).to receive(:set_sms_attributes)
+        .with(attributes: { "DefaultSenderID" => default_sender_id })
+
+      subject.send_sms(phone_number, text)
     end
 
     context "on success" do
