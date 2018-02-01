@@ -2,7 +2,6 @@
 require "rubygems"
 require "bundler/setup"
 require "any_sms-backend-aws"
-require "pry-byebug"
 
 # Initializer code
 AnySMS.configure do |c|
